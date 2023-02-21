@@ -56,7 +56,7 @@ namespace Rudhire_BE.Controllers
                 );
 
 
-            return (string)new JwtSecurityTokenHandler().WriteToken(token).ToJToken();
+            return new JwtSecurityTokenHandler().WriteToken(token);
 
         }
     }

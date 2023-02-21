@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ namespace Rudhire_BE.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TblUserDetailsController : ControllerBase
     {
         private readonly RudHireDbContext _context;
@@ -83,6 +85,7 @@ namespace Rudhire_BE.Controllers
         // POST: api/TblUserDetails
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult<TblUserDetail>> PostTblUserDetail(TblUserDetail tblUserDetail)
         {
           if (_context.TblUserDetails == null)
