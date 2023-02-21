@@ -68,6 +68,11 @@ public partial class RudHireDbContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("password");
             entity.Property(e => e.PhoneNumber).HasColumnName("phone_number");
+            entity.Property(e => e.Role)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasDefaultValueSql("('USER')")
+                .HasColumnName("role");
             entity.Property(e => e.UserName)
                 .HasMaxLength(50)
                 .IsUnicode(false)

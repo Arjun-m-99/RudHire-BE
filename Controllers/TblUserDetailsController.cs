@@ -115,18 +115,6 @@ namespace Rudhire_BE.Controllers
             return NoContent();
         }
 
-        [HttpPost("login")]
-        public IActionResult UserLogin(LoginRequest loginRequest)
-        {
-            var user = _context.TblUserDetails.SingleOrDefault(x => x.UserName == loginRequest.UserName.ToLower() && x.Password == loginRequest.Password);
-
-
-            return NotFound();
-        }
-
-
-
-
         private bool TblUserDetailExists(int id)
         {
             return (_context.TblUserDetails?.Any(e => e.UserId == id)).GetValueOrDefault();

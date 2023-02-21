@@ -26,4 +26,6 @@ public partial class TblUserDetail
     public string? NickName { get; set; }
 
     public DateTime CreationDate { get; set; }
+
+    public string? Role { get; set; }
 }
