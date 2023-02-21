@@ -88,12 +88,42 @@ namespace Rudhire_BE.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<TblUserDetail>> PostTblUserDetail(TblUserDetail tblUserDetail)
         {
+            
           if (_context.TblUserDetails == null)
           {
               return Problem("Entity set 'RudHireDbContext.TblUserDetails'  is null.");
-          }
-            _context.TblUserDetails.Add(tblUserDetail);
+          };
+            var userDetails = new TblUserDetail
+            {
+                FirstName = tblUserDetail.FirstName,
+                LastName = tblUserDetail.LastName,
+                EmailId = tblUserDetail.EmailId,
+                UserName = tblUserDetail.UserName,
+                PhoneNumber = tblUserDetail.PhoneNumber,
+                Password = tblUserDetail.Password,
+                Gender = tblUserDetail.Gender,
+                Dob = tblUserDetail.Dob,
+                NickName = tblUserDetail.NickName,
+            };
+            var qualification = new TblUserQualification
+            {
+                Degree = tblUserDetail.TblUserQualification.Degree,
+                UniversityName = tblUserDetail.TblUserQualification.UniversityName,
+                StartDate = tblUserDetail.TblUserQualification.StartDate,
+                EndDate = tblUserDetail.TblUserQualification.EndDate,
+                Percentage = tblUserDetail.TblUserQualification.Percentage,
+
+            };
+            //qualification = tblUserDetail.TblUserQualification;
+            _context.TblUserDetails.Add(userDetails);
             await _context.SaveChangesAsync();
+
+            qualification.UserId = tblUserDetail.UserId;
+            _context.TblUserQualifications.Add(qualification);
+            await _context.SaveChangesAsync();
+
+           
+           
 
             return CreatedAtAction("GetTblUserDetail", new { id = tblUserDetail.UserId }, tblUserDetail);
         }

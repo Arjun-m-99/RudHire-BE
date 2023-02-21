@@ -28,4 +28,6 @@ public partial class TblUserDetail
     public DateTime CreationDate { get; set; }
 
     public string? Role { get; set; }
+
+    public virtual TblUserQualification? TblUserQualification { get; set; }
 }
