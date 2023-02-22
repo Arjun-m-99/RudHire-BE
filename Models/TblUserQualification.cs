@@ -19,5 +19,5 @@ public partial class TblUserQualification
 
     public decimal Percentage { get; set; }
 
-    //public virtual TblUserDetail Row { get; set; } = null!;
+    public virtual TblUserDetail User { get; set; } = null!;
 }

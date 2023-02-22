@@ -29,5 +29,5 @@ public partial class TblUserDetail
 
     public string? Role { get; set; }
 
-    public virtual TblUserQualification? TblUserQualification { get; set; }
+    public virtual ICollection<TblUserQualification> TblUserQualifications { get; } = new List<TblUserQualification>();
 }
