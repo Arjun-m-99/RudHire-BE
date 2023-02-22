@@ -104,7 +104,10 @@ namespace Rudhire_BE.Controllers
                 Gender = tblUserDetail.Gender,
                 Dob = tblUserDetail.Dob,
                 NickName = tblUserDetail.NickName,
+                TblUserQualification = null,
             };
+            _context.TblUserDetails.Add(userDetails);
+            await _context.SaveChangesAsync();
             var qualification = new TblUserQualification
             {
                 Degree = tblUserDetail.TblUserQualification.Degree,
@@ -115,8 +118,7 @@ namespace Rudhire_BE.Controllers
 
             };
             //qualification = tblUserDetail.TblUserQualification;
-            _context.TblUserDetails.Add(userDetails);
-            await _context.SaveChangesAsync();
+            
 
             qualification.UserId = tblUserDetail.UserId;
             _context.TblUserQualifications.Add(qualification);
