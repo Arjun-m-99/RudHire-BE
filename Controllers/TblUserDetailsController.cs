@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Rudhire_BE.DTOs;
 using Rudhire_BE.Models;
 
 namespace Rudhire_BE.Controllers
@@ -86,15 +87,47 @@ namespace Rudhire_BE.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [AllowAnonymous]
-        public async Task<ActionResult<TblUserDetail>> PostTblUserDetail(TblUserDetail tblUserDetail)
+        public async Task<ActionResult<TblUserDetail>> PostTblUserDetail(CreateUserDTO tblUserDetail)
         {
+            
           if (_context.TblUserDetails == null)
           {
               return Problem("Entity set 'RudHireDbContext.TblUserDetails'  is null.");
-          }
-            _context.TblUserDetails.Add(tblUserDetail);
+          };
+            var userDetails = new TblUserDetail
+            {
+                FirstName = tblUserDetail.FirstName,
+                LastName = tblUserDetail.LastName,
+                EmailId = tblUserDetail.EmailId,
+                UserName = tblUserDetail.UserName,
+                PhoneNumber = tblUserDetail.PhoneNumber,
+                Password = tblUserDetail.Password,
+                Gender = tblUserDetail.Gender,
+                Dob = tblUserDetail.Dob,
+                NickName = tblUserDetail.NickName,
+            };
+            _context.TblUserDetails.Add(userDetails);
             await _context.SaveChangesAsync();
 
+            foreach (TblUserQualificationDTO tblUserQualificationDTO in tblUserDetail.Qualification)
+            {
+                var qualification = new TblUserQualification
+                {
+                UserId = userDetails.UserId,
+                Degree = tblUserQualificationDTO.Degree,
+                UniversityName = tblUserQualificationDTO.UniversityName,
+                StartDate = tblUserQualificationDTO.StartDate,
+                EndDate = tblUserQualificationDTO.EndDate,
+                Percentage = tblUserQualificationDTO.Percentage,
+                };
+                _context.TblUserQualifications.Add(qualification);
+                await _context.SaveChangesAsync();
+            }
+
+            //qualification = tblUserDetail.TblUserQualification;
+
+            //qualification.UserId = tblUserDetail.UserId;
+            
             return CreatedAtAction("GetTblUserDetail", new { id = tblUserDetail.UserId }, tblUserDetail);
         }
 
