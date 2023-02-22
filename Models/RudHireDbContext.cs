@@ -6,9 +6,9 @@ namespace Rudhire_BE.Models;
 
 public partial class RudHireDbContext : DbContext
 {
-    //public RudHireDbContext()
-    //{
-    //}
+    public RudHireDbContext()
+    {
+    }
 
     public RudHireDbContext(DbContextOptions<RudHireDbContext> options)
         : base(options)
@@ -19,9 +19,9 @@ public partial class RudHireDbContext : DbContext
 
     public virtual DbSet<TblUserQualification> TblUserQualifications { get; set; }
 
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-//        => optionsBuilder.UseSqlServer("Server=LAPTOP-6AIBT7VI;Database=RudHireDB;Integrated Security=True;TrustServerCertificate=True;");
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=LAPTOP-6AIBT7VI;Database=RudHireDB;Integrated Security=True;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -87,9 +87,7 @@ public partial class RudHireDbContext : DbContext
 
             entity.ToTable("tblUserQualification");
 
-            entity.Property(e => e.RowId)
-                .ValueGeneratedOnAdd()
-                .HasColumnName("row_id");
+            entity.Property(e => e.RowId).HasColumnName("row_id");
             entity.Property(e => e.Degree)
                 .HasMaxLength(50)
                 .IsUnicode(false)
@@ -98,7 +96,7 @@ public partial class RudHireDbContext : DbContext
                 .HasColumnType("date")
                 .HasColumnName("end_date");
             entity.Property(e => e.Percentage)
-                .HasColumnType("decimal(3, 2)")
+                .HasColumnType("decimal(4, 2)")
                 .HasColumnName("percentage");
             entity.Property(e => e.StartDate)
                 .HasColumnType("date")
@@ -106,13 +104,12 @@ public partial class RudHireDbContext : DbContext
             entity.Property(e => e.UniversityName)
                 .IsUnicode(false)
                 .HasColumnName("university_name");
-            entity.Property(e => e.UserId)
-            .HasColumnName("user_id");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
 
-            //entity.HasOne(d => d.Row).WithOne(p => p.TblUserQualification)
-            //    .HasForeignKey<TblUserQualification>(d => d.RowId)
-            //    .OnDelete(DeleteBehavior.ClientSetNull)
-            //    .HasConstraintName("FK_tblUserQualification_tblUserDetails");
+            entity.HasOne(d => d.User).WithMany(p => p.TblUserQualifications)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_tblUserQualification_tblUserDetails");
         });
 
         OnModelCreatingPartial(modelBuilder);
